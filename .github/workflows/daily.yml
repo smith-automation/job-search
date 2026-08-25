@@ -1,0 +1,35 @@
+name: daily recruit alert
+
+on:
+  schedule:
+    - cron: '0 1 * * *'   # UTC 01:00 = 한국시간 매일 오전 10시
+  workflow_dispatch:       # Actions 탭에서 수동 실행도 가능
+
+permissions:
+  contents: write          # seen 상태파일을 저장소에 다시 커밋하기 위해 필요
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: run crawler
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python main.py
+      # 러너는 매번 초기화되므로 '이미 알림한 공고' 기록(recruit_seen_*.json)을
+      # 저장소에 커밋해서 다음 실행이 이어받게 한다. 없으면 다음 날 중복 알림됨.
+      - name: save seen state
+        if: always()
+        run: |
+          find . -name 'recruit_seen_*.json' -not -path './.git/*' -exec git add {} +
+          if git diff --cached --quiet; then echo "seen 변경 없음"; exit 0; fi
+          git config user.name "recruit-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: update seen state [skip ci]"
+          git pull --rebase origin "$GITHUB_REF_NAME" || true
+          git push
