@@ -47,8 +47,7 @@ PROFILES = [
         "profile": {                                    # 점수 계산 기준(지원자 스펙)
             "education": "4년제 학사",
             "major": "물리학과",
-            "it_major": False,
-            "certificates": [...],                      # 보유 자격증 (env PROFILE_CERTS로 덮어쓰기 가능)
+            "certificates": [],                         # 보유 자격증 나열: ["정보처리기사", "SQLD"]
             "target_cert": "정보처리기사",                # '취득하면 몇 점?' 시뮬레이션 대상
         },
     },
@@ -60,8 +59,8 @@ PROFILES = [
         "exclude_employment": [],
         "title_exclude": ["통장"],
         "profile": {
-            "education": "4년제 학사", "major": "물리학과", "it_major": False,
-            "certificates": [...],                      # env PROFILE_CERTS2 (기본값: 컴퓨터활용능력 2급)
+            "education": "4년제 학사", "major": "물리학과",
+            "certificates": ["컴퓨터활용능력 2급"],
             "target_cert": "정보처리기사",
         },
     },

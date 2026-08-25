@@ -20,9 +20,8 @@ PROFILES = [
         "profile": {                                   # 점수 계산 기준(지원자 스펙)
             "education": "4년제 학사",
             "major": "물리학과",
-            "it_major": False,
-            # 환경변수로 덮어쓰려면 예: PROFILE_CERTS="정보처리기사,SQLD"
-            "certificates": [c.strip() for c in os.environ.get("PROFILE_CERTS", "").split(",") if c.strip()],
+            # 보유 자격증 — 여기에 나열: ["정보처리기사", "SQLD"]
+            "certificates": [],
             "target_cert": "정보처리기사",
         },
     },
@@ -36,9 +35,7 @@ PROFILES = [
         "profile": {
             "education": "4년제 학사",
             "major": "물리학과",
-            "it_major": False,
-            # PROFILE_CERTS2 = 동생 전용 환경변수(같은 PC에서 두 프로필 충돌 방지)
-            "certificates": [c.strip() for c in os.environ.get("PROFILE_CERTS2", "컴퓨터활용능력 2급").split(",") if c.strip()],
+            "certificates": ["컴퓨터활용능력 2급"],
             "target_cert": "정보처리기사",
         },
     },
